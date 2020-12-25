@@ -19,12 +19,17 @@ func UserExist(c *gin.Context) {
 func AddUser(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
-	code = model.CheckUser(data.Username)
-	if code == errmsg.SUCCSE_CODE {
-		model.CreatUser(&data)
+	if data.Username == "" {
+		code = errmsg.ERROR_PARAM_NULL_CODE
+	} else {
+		code = model.CheckUser(data.Username)
+		if code == errmsg.SUCCSE_CODE {
+			model.CreatUser(&data)
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
+		"data":    data,
 		"message": errmsg.GetErrMsg(code),
 	})
 }
