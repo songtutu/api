@@ -1,3 +1,9 @@
+/*
+ * @Author: song.tutu
+ * @Date: 2020-12-26 09:57:17
+ * @Last Modified by:   song.tutu
+ * @Last Modified time: 2020-12-26 09:57:17
+ */
 package model
 
 import (
@@ -14,7 +20,7 @@ import (
 var db *gorm.DB
 var err error
 
-func InitDb() {
+func InitDb() *gorm.DB {
 	db, err = gorm.Open(utils.Db, fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		utils.DbUser,
 		utils.DbPassWord,
@@ -37,5 +43,5 @@ func InitDb() {
 
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	db.DB().SetConnMaxLifetime(10 * time.Second)
-
+	return db
 }
