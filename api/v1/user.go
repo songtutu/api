@@ -24,8 +24,13 @@ func UserExist(c *gin.Context) {
 //添加用户
 func AddUser(c *gin.Context) {
 	var data model.User
-	_ = c.ShouldBindJSON(&data)
-	if data.Username == "" {
+	if err := c.ShouldBind(&data); err != nil {
+		if err := c.ShouldBindJSON(&data); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "User information is not complete " + err.Error()})
+			return
+		}
+	}
+	if data.Username == "" || data.Password == "" {
 		code = errmsg.ERROR_PARAM_NULL_CODE
 	} else {
 		code = model.CheckUser(data.Username)

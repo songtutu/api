@@ -9,17 +9,17 @@ package model
 import (
 	"ginapi/utils/errmsg"
 
-	"github.com/jinzhu/gorm"
-
 	"ginapi/utils/mymd5"
+
+	"github.com/jinzhu/gorm"
 )
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"type: varchar(20);not null" json:"username"`
-	Password string `gorm:"type: varchar(20);not null" json:"password"`
+	Username string `gorm:"type: varchar(20);not null" json:"username" form:"username"`
+	Password string `gorm:"type: varchar(50);not null" json:"password" form:"password"`
 	//角色
-	Role int `gorm:"type: int" json:"role"`
+	Role int `gorm:"type: int" json:"role" form:"role"`
 }
 
 //检查用户是否存在
@@ -34,10 +34,15 @@ func CheckUser(name string) (code int) {
 
 //添加用户
 func CreatUser(data *User) int {
-	data.Password = mymd5.Encryption(data.Password)
+
 	err := db.Create(&data).Error
 	if err != nil {
 		return errmsg.ERROR_CODE
 	}
 	return errmsg.SUCCSE_CODE
+}
+
+//钩子函数
+func (u *User) BeforeSave() {
+	u.Password = mymd5.Encryption(u.Password)
 }
