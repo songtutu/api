@@ -7,6 +7,7 @@
 package model
 
 import (
+	"fmt"
 	"ginapi/utils/errmsg"
 
 	"ginapi/utils/mymd5"
@@ -40,6 +41,18 @@ func CreatUser(data *User) int {
 		return errmsg.ERROR_CODE
 	}
 	return errmsg.SUCCSE_CODE
+}
+
+//查询用户列表
+func GetUserList(page int, rows int) ([]User, int) {
+	var userList []User
+	var count = 0
+	err := db.Table("User").Count(&count).Limit(rows).Offset((page - 1) * rows).Find(&userList).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, 0
+	}
+	fmt.Println(userList)
+	return userList, count
 }
 
 //钩子函数

@@ -8,8 +8,10 @@ package v1
 
 import (
 	"ginapi/model"
+	"ginapi/utils"
 	"ginapi/utils/errmsg"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -38,11 +40,7 @@ func AddUser(c *gin.Context) {
 			model.CreatUser(&data)
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"data":    data,
-		"message": errmsg.GetErrMsg(code),
-	})
+	utils.ReturnJson(c, http.StatusOK, code, data)
 }
 
 //查询单个用户
@@ -52,7 +50,18 @@ func GetUser(c *gin.Context) {
 
 //查询用户列表
 func GetUsers(c *gin.Context) {
-
+	page, _ := strconv.Atoi(c.Query("page"))
+	rows, _ := strconv.Atoi(c.Query("rows"))
+	//-1是不加限制
+	if page == 0 {
+		page = -1
+	}
+	if rows == 0 {
+		rows = -1
+	}
+	var count = 0
+	userList, count := model.GetUserList(page, rows)
+	utils.ReturnPageJson(c, http.StatusOK, errmsg.SUCCSE_CODE, userList, count)
 }
 
 //编辑用户
