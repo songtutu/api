@@ -1,13 +1,14 @@
 /*
  * @Author: song.tutu
  * @Date: 2020-12-26 09:56:59
- * @Last Modified by:   song.tutu
- * @Last Modified time: 2020-12-26 09:56:59
+ * @Last Modified by: song.tutu
+ * @Last Modified time: 2020-12-30 11:21:02
  */
 package model
 
 import (
 	"fmt"
+	"ginapi/utils"
 	"ginapi/utils/errmsg"
 
 	"ginapi/utils/mymd5"
@@ -35,8 +36,10 @@ func CheckUser(name string) (code int) {
 
 //添加用户
 func CreatUser(data *User) int {
-
-	err := db.Create(&data).Error
+	err := utils.ExecSqlWithTransaction(db, func(tx *gorm.DB) error {
+		err := tx.Create(&data).Error
+		return err
+	})
 	if err != nil {
 		return errmsg.ERROR_CODE
 	}

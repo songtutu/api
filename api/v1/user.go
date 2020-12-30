@@ -1,8 +1,8 @@
 /*
  * @Author: song.tutu
  * @Date: 2020-12-26 09:57:25
- * @Last Modified by:   song.tutu
- * @Last Modified time: 2020-12-26 09:57:25
+ * @Last Modified by: song.tutu
+ * @Last Modified time: 2020-12-30 10:21:19
  */
 package v1
 
@@ -37,7 +37,7 @@ func AddUser(c *gin.Context) {
 	} else {
 		code = model.CheckUser(data.Username)
 		if code == errmsg.SUCCSE_CODE {
-			model.CreatUser(&data)
+			code = model.CreatUser(&data)
 		}
 	}
 	utils.ReturnJson(c, http.StatusOK, code, data)
