@@ -7,6 +7,7 @@
 package v1
 
 import (
+	"fmt"
 	"ginapi/model"
 	"ginapi/utils"
 	"ginapi/utils/errmsg"
@@ -18,19 +19,21 @@ import (
 
 var code int
 
-//查询用户是否存在
 func UserExist(c *gin.Context) {
 
 }
 
-//添加用户
+// @Summary Add user
+// @Produce  json
+// @Param user body model.User true "User"
+// @Success 200 {ojbect} utils.Swagger
+// @Router /api/v1/user/add [post]
 func AddUser(c *gin.Context) {
+	fmt.Println(c.Param("id"))
 	var data model.User
 	if err := c.ShouldBind(&data); err != nil {
-		if err := c.ShouldBindJSON(&data); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "User information is not complete " + err.Error()})
-			return
-		}
+		c.JSON(http.StatusBadRequest, gin.H{"error": "User information is not complete " + err.Error()})
+		return
 	}
 	if data.Username == "" || data.Password == "" {
 		code = errmsg.ERROR_PARAM_NULL_CODE
@@ -43,16 +46,13 @@ func AddUser(c *gin.Context) {
 	utils.ReturnJson(c, http.StatusOK, code, data)
 }
 
-//查询单个用户
 func GetUser(c *gin.Context) {
 
 }
 
-//查询用户列表
 func GetUsers(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	rows, _ := strconv.Atoi(c.Query("rows"))
-	//-1是不加限制
 	if page == 0 {
 		page = -1
 	}
@@ -64,12 +64,10 @@ func GetUsers(c *gin.Context) {
 	utils.ReturnPageJson(c, http.StatusOK, errmsg.SUCCSE_CODE, userList, count)
 }
 
-//编辑用户
 func EditUser(c *gin.Context) {
 
 }
 
-//删除用户
 func DeleteUser(c *gin.Context) {
 
 }

@@ -8,17 +8,24 @@ package routes
 
 import (
 	v1 "ginapi/api/v1"
+	_ "ginapi/docs"
 	"ginapi/utils"
 	"ginapi/utils/httpCors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+
+	_ "ginapi/docs"
 )
 
 func InitRouter() {
 	gin.SetMode(utils.AppMode)
 	r := gin.Default()
 	r.Use(httpCors.Cors())
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	rv1 := r.Group("api/v1")
 	{

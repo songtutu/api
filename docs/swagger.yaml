@@ -1,0 +1,42 @@
+definitions:
+  model.User:
+    properties:
+      password:
+        type: string
+      role:
+        description: 角色
+        type: integer
+      username:
+        type: string
+    type: object
+  utils.Swagger:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /api/v1/user/add:
+    post:
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ojbect
+      summary: Add user
+swagger: "2.0"

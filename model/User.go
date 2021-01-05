@@ -7,7 +7,6 @@
 package model
 
 import (
-	"fmt"
 	"ginapi/utils"
 	"ginapi/utils/errmsg"
 
@@ -54,7 +53,6 @@ func GetUserList(page int, rows int) ([]User, int) {
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, 0
 	}
-	fmt.Println(userList)
 	return userList, count
 }
 
