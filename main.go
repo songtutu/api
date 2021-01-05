@@ -10,4 +10,5 @@ func main() {
 	db := model.InitDb()
 	routes.InitRouter()
 	db.Close()
+
 }

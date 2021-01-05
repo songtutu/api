@@ -7,7 +7,6 @@
 package v1
 
 import (
-	"fmt"
 	"ginapi/model"
 	"ginapi/utils"
 	"ginapi/utils/errmsg"
@@ -29,7 +28,6 @@ func UserExist(c *gin.Context) {
 // @Success 200 {ojbect} utils.Swagger
 // @Router /api/v1/user/add [post]
 func AddUser(c *gin.Context) {
-	fmt.Println(c.Param("id"))
 	var data model.User
 	if err := c.ShouldBind(&data); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "User information is not complete " + err.Error()})
@@ -50,6 +48,12 @@ func GetUser(c *gin.Context) {
 
 }
 
+// @Summary Get user
+// @Produce  json
+// @Param page query int false "page"
+// @Param rows query int false "rows"
+// @Success 200 {ojbect} utils.Swagger
+// @Router /api/v1/user/get [get]
 func GetUsers(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	rows, _ := strconv.Atoi(c.Query("rows"))

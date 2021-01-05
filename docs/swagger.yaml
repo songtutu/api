@@ -1,14 +1,4 @@
 definitions:
-  model.User:
-    properties:
-      password:
-        type: string
-      role:
-        description: 角色
-        type: integer
-      username:
-        type: string
-    type: object
   utils.Swagger:
     properties:
       code:
@@ -22,15 +12,17 @@ info:
   contact: {}
   license: {}
 paths:
-  /api/v1/user/add:
-    post:
+  /api/v1/user/get:
+    get:
       parameters:
-      - description: User
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.User'
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: rows
+        in: query
+        name: rows
+        type: integer
       produces:
       - application/json
       responses:
@@ -38,5 +30,5 @@ paths:
           description: OK
           schema:
             type: ojbect
-      summary: Add user
+      summary: Get user
 swagger: "2.0"
